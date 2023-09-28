@@ -18,19 +18,21 @@ configurations {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
+    maven {url "https://repo.spring.io/milestone"}
+    maven {url "https://repo.spring.io/snapshot"}
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation ('com.amazonaws.serverless:aws-serverless-java-container-springboot3:[2.0-SNAPSHOT,)')
+    implementation ('org.springframework.boot:spring-boot-starter-data-mongodb')
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+task buildZip(type: Zip) {
+    into('lib') {
+        from(jar)
+        from(configurations.runtimeClasspath)
+    }
 }
